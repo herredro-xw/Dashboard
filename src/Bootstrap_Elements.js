@@ -12,7 +12,7 @@ export const Navbars = () => {
       Dash
     </Navbar.Brand>
     <Nav className="mr-auto">
-      <Nav.Link href="#home">Hoooome</Nav.Link>
+      <Nav.Link href="#home">Home</Nav.Link>
       <Nav.Link href="https://wiki.kreuzwerker.de">Wiki</Nav.Link>
       <Nav.Link href="https://intranet.kreuzwerker.de">Intranet</Nav.Link>
     </Nav>

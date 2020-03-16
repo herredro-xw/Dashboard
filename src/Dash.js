@@ -34,7 +34,7 @@ export function Dashboard() {
       content = <LyricForm />
       break;
     default:
-      content = <div>This dash element is not implemented yet</div>
+      content = <div>Made some changes to Master and then deployed. Lets see if thats enough...This dash element is not implemented yet</div>
       break;
   }
 
