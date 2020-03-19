@@ -1,84 +1,64 @@
 import React, { useState, useEffect }  from "react";
-import { Spinner } from 'react-bootstrap';
-import regeneratorRuntime from "regenerator-runtime";
-
-/*
- *
- *
- * HAVE A LOOK AT https://react-leaflet.js.org/
- *
- *
- */
-
+// import regeneratorRuntime from "regenerator-runtime";
 
 import './LyricContainer.css'
 
-let LyricContainer = (props) => {
+let Lyrics = (props) => {
+  let [song, setSong] = useState('');
+  let [artist, setArtist] = useState('');
+  let [url, setUrl] = useState('');
+  let [lyrics, setLyrics] = useState('');
 
-  return(
-    // Show only when props.show == true
-    <div id="lyrics">
-      <form id="formm">
-        <h3>Search for Lyrics</h3>
-        Artist: <input type="text" id="inputartist" />
-        Title: <input type="text" id="inputtitle" />
-        <div id="lyricsOut">SUBMIT</div>
-      </form>
-    </div>
-  )
-}
 
-export let LyricForm = (props) => {
-  const [artist,setArtist] = useState('');
-  const [song,setSong] = useState('');
-  const [lyrics, setLyrics] = useState('');
-
-  const handleChangeArtist = e => {
-    setArtist(e.target.value)
-  }
-  const handleChangeSong = e => {
-    setSong(e.target.value)
-  }
-  function handleSubmit(e) {
-    e.preventDefault()
-
-  }
-
-  async function fetchLyrics (artist, song) {
-      let response = await fetch(`https://api.lyrics.ovh/v1/${artist}/${song}`);
-      let data = await response.json();
-      console.log('Lyrics: ', data.lyrics)
-      setLyrics(artist, song)
-  }
 
   useEffect(() => {
+    fetch(url)
+      .then(result => result.json())
+      .then(result => setLyrics(result.lyrics))
+      .catch(error => console.log("Warn:", error));
+  }, [url]);
 
-  }, [])
-
-  return(
-    // Show only when props.show == true
-
-    <div id="lyrics">
-      {lyrics}
-      <form id="for" onSubmit={handleSubmit}>
+  let inputForm = (
+      <form onSubmit={(event) => {
+          event.preventDefault();
+          setSong(song);
+          setArtist(artist);
+          setUrl(`https://api.lyrics.ovh/v1/${artist}/${song}`);}}>
         <h3>Search for Lyrics</h3>
         Artist:
         <input
           type="text"
-          onChange={handleChangeArtist}
+          value={artist}
+          onChange={event => setArtist(event.target.value)}
         />
-
         Title:
         <input
           type="text"
-          onChange={handleChangeSong}
+          value={song}
+          onChange={event => setSong(event.target.value)}
         />
+        <input type="submit" value="Sing it!" />
+      </form>)
 
-        <input type="submit" value="Get Lyrics" />
+  if (lyrics) {
+    return (
+      <>
+        {inputForm}
+        <p class='lyrics'>{lyrics}</p>
+        <button onClick={() => {
+          setLyrics('')
+          setUrl('')
+          setSong('')
+          setArtist('')
+        }}>Clear</button>
+      </>
+    );
+  } else if (!lyrics) {
+    return (inputForm);
+  } else {
+    return ("!!!!!!!!! I'm somehow broken !!!!!!!!!")
+  }
 
-      </form>
-    </div>
-  )
 }
 
-export default LyricContainer;
+export default Lyrics

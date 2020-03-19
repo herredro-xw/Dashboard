@@ -1,3 +1,19 @@
 .MapContainer {
   background: rgba(0,0,0,0.1);
 }
+.tile {
+  height: 200px;
+  width: 500px;
+  background-color: green;
+}
+
+.map {
+  height: 200px;
+  position: fixed;
+  width: 500px;
+  background-color: blue;
+}
+.leaflet-container {
+  height: 400px;
+  width: 100%;
+}
