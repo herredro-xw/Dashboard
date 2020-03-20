@@ -1,8 +1,7 @@
 import React, { useState, useEffect }  from "react";
 import './MapContainer.css'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet'
-import {Leaflett} from './Leaflett.js'
+import 'leaflet/dist/leaflet.css';
 
 
 const position = [51.505, -0.09]
@@ -27,7 +26,7 @@ const MapContainer = (props) => {
 
 
   let content = null;
-  const position = [51.505, -0.09];
+  const position = [52.5023924, 13.4750512];
   let mapp = (
     <div>
       <Map center={position} zoom={13}>
@@ -35,8 +34,10 @@ const MapContainer = (props) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
         />
-        <Marker position={position}>
-          <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+        <Marker position={[52.5023924, 13.4750512]}>
+          <Popup>
+            A pretty CSS3 popup. <br/> Easily customizable.
+          </Popup>
         </Marker>
       </Map>
     </div>

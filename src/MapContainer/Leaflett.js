@@ -35,7 +35,6 @@ export const Leaflett = () => {
         </Marker>
       </Map>
     </div>
-
   )
 
   return (mapp)
