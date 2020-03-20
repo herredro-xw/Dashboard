@@ -20,14 +20,19 @@ export function Dashboard() {
   }
 
   // we set a variable for what should be rendered depending on the state
-  let content = (<div>
+  let content = (<div classname='dash-content'>
     {/*  This is where the content is shown, e.g. the Map */}
   </div>);
 
   // with each state change the component gets re-rendered
   switch(focus){
     case 'maps':
-      content = <MapContainer />
+      content = (
+        <div className='dash-content' id='leafletmap'>
+          <MapContainer />
+        </div>
+      )
+
       // content = <p></p>
       break;
     case 'lyrics':
@@ -49,7 +54,6 @@ export function Dashboard() {
         {focus}
       </h2>
       {content}
-
     </div>
   )
 }

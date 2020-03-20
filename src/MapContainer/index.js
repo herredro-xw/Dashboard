@@ -1,12 +1,9 @@
 import React, { useState, useEffect }  from "react";
-// import { Spinner } from 'react-bootstrap';
-// import regeneratorRuntime from "regenerator-runtime";
-
 import './MapContainer.css'
-
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet'
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-// const { Map: LeafletMap, TileLayer, Marker, Popup } = ReactLeaflet
+import {Leaflett} from './Leaflett.js'
+
 
 const position = [51.505, -0.09]
 
@@ -22,28 +19,79 @@ const MapContainer = (props) => {
   classes.push(props.className);
   console.log(classes);
 
+
+
+
+
   // I add all relevant functions and variables to the specific component to keep track of where everything lies
-  const position = [51.505, -0.09];
+
 
   let content = null;
-  const map = (
-    <Map center={position} zoom={13}>
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-      />
-      <Marker position={position}>
-        <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
-      </Marker>
-    </Map>
+  const position = [51.505, -0.09];
+  let mapp = (
+    <div>
+      <Map center={position} zoom={13}>
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+        />
+        <Marker position={position}>
+          <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+        </Marker>
+      </Map>
+    </div>
   )
+
+
+  let geoloc = null;
+
+  useEffect(() => {
+    async function fetchData() {
+        try {
+            const response = await navigator.geolocation.getCurrentPosition(data => {
+                console.log('first ', data);
+                const {latitude,longitude} = data.coords;
+                console.log("json ", data.coords.longitude);
+                geoloc = [latitude, longitude]
+                // geoloc = [data.coords.longitude. data.coords.latitude]
+                // fetchMap(latitude, longitude);
+            });
+            // const json = await response.json();
+            // console.log(json.coords.latitude, json.coords.longitude);
+            return geoloc
+        } catch (e) {
+            console.error(e);
+        }
+
+    };
+    function getMap(coord) {
+      console.log('getMap Props: ', coord);
+      let mapp = (
+        <div>
+          <Map center={[1,1]} zoom={13}>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+            />
+            <Marker position={position}>
+              <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+            </Marker>
+          </Map>
+        </div>
+      )
+    }
+    let json = fetchData()
+    .then(geoloc => getMap(geoloc))
+    console.log("json ", json);
+  }, []);
+
 
 
 
   if (!isLoading && fetchedData) {
     console.log("loaded && fetchedData -- useEffect should run --");
     console.log(fetchedData);
-    content = <p>{map}</p>
+    content = <p>{mapp}</p>
   }
   if (!isLoading && !fetchedData) {
     console.log("!loaded && !fetchedData -- FIRST should be --");
@@ -80,7 +128,7 @@ const MapContainer = (props) => {
   //   content = <p>ERROR</p>
   // }
 
-  return (map);
+  return (mapp);
 
 }
 
